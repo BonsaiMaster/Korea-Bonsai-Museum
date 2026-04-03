@@ -379,8 +379,8 @@
   </div>
 
   <script>
-  const REMOTE_JSON_URL = "https://script.google.com/macros/s/AKfycby6GaeK3Wg8p5MyKEhRMpy-3P0BIcJwpRWDHwRQG7k_meeI0eDRNeSrRJ7vdBhP9Ug/exec";
-const DEFAULT_ID = "KBM-0001";
+  const REMOTE_JSON_URL = "https://script.google.com/macros/s/AKfycbwmf06HYc8kQuT-VjIyHVO9_8Tv2A2FHdUlqRodbZtPM69t2-3R88jqH0jizYfNqmQ/exec";
+  const DEFAULT_ID = "KBM-0001";
 
   function escapeHtml(value = "") {
     return String(value)
@@ -513,6 +513,29 @@ const DEFAULT_ID = "KBM-0001";
     `;
   }
 
+  function loadRemoteDataJSONP() {
+    return new Promise((resolve, reject) => {
+      const callbackName = "bonsaiCallback_" + Date.now();
+
+      window[callbackName] = function(data) {
+        resolve(data);
+        delete window[callbackName];
+        script.remove();
+      };
+
+      const script = document.createElement("script");
+      script.src = REMOTE_JSON_URL + "?callback=" + callbackName;
+
+      script.onerror = function() {
+        reject(new Error("Unable to load remote data."));
+        delete window[callbackName];
+        script.remove();
+      };
+
+      document.body.appendChild(script);
+    });
+  }
+
   async function init() {
     const app = document.getElementById("app");
 
@@ -520,16 +543,14 @@ const DEFAULT_ID = "KBM-0001";
       app.className = "loading";
       app.textContent = "Loading specimen profile...";
 
-      const response = await fetch(REMOTE_JSON_URL, { cache: "no-store" });
-
-      if (!response.ok) {
-        throw new Error("HTTP error " + response.status);
-      }
-
-      const catalog = await response.json();
+      const catalog = await loadRemoteDataJSONP();
 
       if (!Array.isArray(catalog) || catalog.length === 0) {
         throw new Error("No specimen data found.");
+      }
+
+      if (catalog.error) {
+        throw new Error(catalog.error);
       }
 
       const requestedId = getQueryParam("id") || DEFAULT_ID;
@@ -541,6 +562,7 @@ const DEFAULT_ID = "KBM-0001";
 
       app.className = "";
       app.innerHTML = renderSpecimen(tree);
+
     } catch (error) {
       app.className = "error";
       app.textContent = "Unable to load specimen profile: " + error.message;
