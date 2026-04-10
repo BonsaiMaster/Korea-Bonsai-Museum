@@ -3,574 +3,80 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Specimen Profile | Korea Bonsai Museum</title>
+  <title>KBM Test</title>
   <style>
-    :root {
-      --museum-green: #183126;
-      --museum-green-2: #244536;
-      --soft-gold: #b79255;
-      --parchment: #fbfaf7;
-      --paper: #ffffff;
-      --text-dark: #243028;
-      --text-soft: #627166;
-      --line: #e8e3d8;
-      --shadow: 0 20px 50px rgba(19, 33, 26, 0.08);
-      --radius: 22px;
-      --radius-sm: 14px;
-      --max: 1100px;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
     body {
-      margin: 0;
-      font-family: "Inter", "Segoe UI", "Noto Sans KR", Arial, sans-serif;
-      color: var(--text-dark);
-      background:
-        radial-gradient(circle at top left, rgba(183,146,85,0.08), transparent 30%),
-        linear-gradient(180deg, #f4f2ec 0%, #f6f4ef 100%);
-      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      padding: 30px;
+      background: #f7f7f7;
     }
-
-    .page {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 28px 18px 48px;
-    }
-
-    .shell {
-      background: var(--parchment);
-      border: 1px solid rgba(183,146,85,0.18);
-      border-radius: 28px;
-      box-shadow: var(--shadow);
-      overflow: hidden;
-    }
-
-    .top-bar {
-      height: 6px;
-      background: linear-gradient(90deg, var(--museum-green), var(--soft-gold));
-    }
-
-    .museum-header {
-      padding: 18px 26px 0;
-      text-align: center;
-    }
-
-    .museum-header .eyebrow {
-      display: inline-block;
-      text-transform: uppercase;
-      letter-spacing: 0.28em;
-      font-size: 0.74rem;
-      color: var(--soft-gold);
-      margin-bottom: 10px;
-    }
-
-    .hero {
-      display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
-      gap: 24px;
-      padding: 24px 24px 8px;
-    }
-
-    .hero-card,
-    .side-card,
-    .panel {
-      background: rgba(255,255,255,0.7);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      overflow: hidden;
-      backdrop-filter: blur(8px);
-    }
-
-    .hero-media {
-      aspect-ratio: 4 / 3;
-      background: #ece8df;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .hero-media img,
-    .style-media img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .hero-body {
-      padding: 24px;
-    }
-
-    .title-row {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .title-block h1 {
-      margin: 0;
-      font-family: "Cormorant Garamond", "Times New Roman", serif;
-      font-size: clamp(2rem, 4vw, 3.2rem);
-      line-height: 0.95;
-      color: var(--museum-green);
-      font-weight: 600;
-    }
-
-    .korean-name {
-      margin-top: 10px;
-      font-size: 1.15rem;
-      color: #4d5a53;
-      font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
-    }
-
-    .latin-name {
-      margin-top: 6px;
-      font-size: 1rem;
-      font-style: italic;
-      color: #7b867e;
-    }
-
-    .price-pill {
-      white-space: nowrap;
-      background: linear-gradient(180deg, #f4ead8, #f1e3ca);
-      color: #6f562a;
-      border: 1px solid rgba(183,146,85,0.25);
-      border-radius: 999px;
-      padding: 10px 14px;
-      font-size: 0.95rem;
-      font-weight: 600;
-    }
-
-    .description {
-      margin-top: 18px;
-      color: var(--text-soft);
-      font-size: 0.98rem;
-      line-height: 1.75;
-    }
-
-    .tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 18px;
-    }
-
-    .tag {
-      padding: 9px 12px;
-      border-radius: 999px;
-      background: #f2f5f2;
-      color: #395142;
-      border: 1px solid #dde7df;
-      font-size: 0.88rem;
-    }
-
-    .side-card {
-      display: grid;
-      grid-template-rows: auto 1fr;
-    }
-
-    .spec-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-      padding: 22px;
-    }
-
-    .spec {
-      background: var(--paper);
-      border: 1px solid var(--line);
-      border-radius: var(--radius-sm);
-      padding: 14px;
-    }
-
-    .spec-label {
-      display: block;
-      font-size: 0.74rem;
-      text-transform: uppercase;
-      letter-spacing: 0.11em;
-      color: var(--soft-gold);
-      margin-bottom: 8px;
-    }
-
-    .spec-value {
-      font-size: 1rem;
-      color: var(--text-dark);
-      line-height: 1.45;
-      font-weight: 500;
-    }
-
-    .registry {
-      margin: 0 22px 22px;
-      padding: 16px 18px;
-      border-radius: var(--radius-sm);
-      background: linear-gradient(180deg, #1f3a2d, #183126);
-      color: #eef5f0;
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .registry small {
-      display: block;
-      color: rgba(255,255,255,0.7);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 4px;
-    }
-
-    .content {
-      padding: 8px 24px 24px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-    }
-
-    .panel-header {
-      padding: 18px 20px 0;
-    }
-
-    .panel-title {
-      margin: 0;
-      font-size: 0.82rem;
-      color: var(--soft-gold);
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-    }
-
-    .panel-body {
-      padding: 18px 20px 22px;
-    }
-
-    .panel-body p {
-      margin: 0;
-      color: var(--text-soft);
-      line-height: 1.75;
-      font-size: 0.97rem;
-    }
-
-    .style-layout {
-      display: grid;
-      grid-template-columns: 0.95fr 1.05fr;
-      gap: 18px;
-      align-items: stretch;
-    }
-
-    .style-media {
-      min-height: 230px;
-      background: #ece8df;
-      border-radius: 18px;
-      overflow: hidden;
-      border: 1px solid var(--line);
-    }
-
-    .care-list {
-      display: grid;
-      gap: 12px;
-    }
-
-    .care-item {
-      background: var(--paper);
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      padding: 14px 15px;
-    }
-
-    .care-item strong {
-      display: block;
-      color: var(--museum-green);
-      margin-bottom: 6px;
-      font-size: 0.9rem;
-    }
-
-    .care-item span {
-      color: var(--text-soft);
-      line-height: 1.65;
-      font-size: 0.95rem;
-    }
-
-    .footer {
-      text-align: center;
-      padding: 8px 24px 30px;
-      color: #9c9b94;
-      font-size: 0.72rem;
-      text-transform: uppercase;
-      letter-spacing: 0.22em;
-    }
-
-    .empty-image {
-      width: 100%;
-      height: 100%;
-      display: grid;
-      place-items: center;
-      color: #a6a095;
-      font-size: 0.95rem;
-      padding: 20px;
-      text-align: center;
-    }
-
-    .loading,
-    .error {
-      max-width: 760px;
-      margin: 80px auto;
+    .box {
       background: white;
-      border: 1px solid var(--line);
-      border-radius: 24px;
-      padding: 28px;
-      box-shadow: var(--shadow);
-      text-align: center;
+      border: 1px solid #ddd;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 700px;
+      margin: 0 auto;
     }
-
-    .error {
-      color: #8a2f2f;
-    }
-
-    @media (max-width: 900px) {
-      .hero,
-      .content,
-      .style-layout {
-        grid-template-columns: 1fr;
-      }
-
-      .spec-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-
-    @media (max-width: 640px) {
-      .page {
-        padding: 12px 10px 24px;
-      }
-
-      .museum-header {
-        padding: 16px 16px 0;
-      }
-
-      .hero {
-        padding: 16px 16px 6px;
-      }
-
-      .content {
-        padding: 6px 16px 16px;
-      }
-
-      .spec-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .hero-body,
-      .panel-body {
-        padding: 16px;
-      }
-
-      .panel-header {
-        padding: 16px 16px 0;
-      }
+    pre {
+      white-space: pre-wrap;
+      word-break: break-word;
+      background: #f3f3f3;
+      padding: 12px;
+      border-radius: 8px;
     }
   </style>
 </head>
 <body>
-  <div class="page">
-    <div id="app" class="loading">Loading specimen profile...</div>
+  <div class="box">
+    <h1>KBM Test Page</h1>
+    <div id="status">Script started...</div>
+    <pre id="output"></pre>
   </div>
 
   <script>
-  const REMOTE_JSON_URL = "https://script.google.com/macros/s/AKfycby6GaeK3Wg8p5MyKEhRMpy-3P0BIcJwpRWDHwRQG7k_meeI0eDRNeSrRJ7vdBhP9Ug/exec";
-  const DEFAULT_ID = "KBM-0001";
+    const REMOTE_JSON_URL = "https://script.google.com/macros/s/AKfycbwJomCmJ366O6rvSC90xxqfWI2kqvCGqRvdaTkVuPZUEYqLD4xubHs4z2-Tzr8i0x4/exec";
 
-  function escapeHtml(value = "") {
-    return String(value)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
-  }
+    async function init() {
+      const status = document.getElementById("status");
+      const output = document.getElementById("output");
 
-  function getQueryParam(name) {
-    const params = new URLSearchParams(window.location.search);
-    return params.get(name);
-  }
+      try {
+        status.textContent = "Fetching JSON...";
 
-  function renderImage(url, alt) {
-    if (!url) {
-      return `<div class="empty-image">Image not available</div>`;
+        const response = await fetch(REMOTE_JSON_URL, { cache: "no-store" });
+        if (!response.ok) {
+          throw new Error("HTTP " + response.status);
+        }
+
+        const data = await response.json();
+
+        status.textContent = "JSON loaded successfully.";
+
+        if (!Array.isArray(data) || data.length === 0) {
+          output.textContent = "No data returned.";
+          return;
+        }
+
+        const first = data[0];
+
+        output.textContent =
+          "First specimen loaded successfully:\n\n" +
+          "ID: " + (first.tree_id || first.id || "") + "\n" +
+          "English Name: " + (first.english_name || first.name_en || "") + "\n" +
+          "Height: " + (first["height_(cm)"] || first.height_cm || "") + "\n" +
+          "Width: " + (first["width_(cm)"] || first.width_cm || "") + "\n" +
+          "Depth: " + (first["depth_(cm)"] || first.depth_cm || "") + "\n\n" +
+          "Full object:\n" +
+          JSON.stringify(first, null, 2);
+      } catch (error) {
+        status.textContent = "Error while loading data.";
+        output.textContent = error.message;
+        console.error(error);
+      }
     }
-    return `<img src="${escapeHtml(url)}" alt="${escapeHtml(alt)}">`;
-  }
 
-  function renderSpecimen(tree) {
-    return `
-      <div class="shell">
-        <div class="top-bar"></div>
-
-        <div class="museum-header">
-          <div class="eyebrow">Korea Bonsai Museum</div>
-        </div>
-
-        <section class="hero">
-          <article class="hero-card">
-            <div class="hero-media">
-              ${renderImage(tree.specimen_image, `${tree.name_en || "Specimen"} specimen image`)}
-            </div>
-
-            <div class="hero-body">
-              <div class="title-row">
-                <div class="title-block">
-                  <h1>${escapeHtml(tree.name_en || "Unknown Specimen")}</h1>
-                  <div class="korean-name">${escapeHtml(tree.name_kr || "-")}</div>
-                  <div class="latin-name">${escapeHtml(tree.name_latin || "-")}</div>
-                </div>
-                <div class="price-pill">${escapeHtml(tree.price || "Price on request")}</div>
-              </div>
-
-              <div class="description">
-                ${escapeHtml(tree.description || "No specimen description available yet.")}
-              </div>
-
-              <div class="tags">
-                <span class="tag">${escapeHtml(tree.style || "Style not specified")}</span>
-                <span class="tag">${escapeHtml(tree.size || "Size not specified")}</span>
-                <span class="tag">${escapeHtml(tree.age || "Age not specified")}</span>
-              </div>
-            </div>
-          </article>
-
-          <aside class="side-card">
-            <div class="spec-grid">
-              <div class="spec">
-                <span class="spec-label">Specimen ID</span>
-                <div class="spec-value">${escapeHtml(tree.id || "-")}</div>
-              </div>
-              <div class="spec">
-                <span class="spec-label">Style</span>
-                <div class="spec-value">${escapeHtml(tree.style || "-")}</div>
-              </div>
-              <div class="spec">
-                <span class="spec-label">Size</span>
-                <div class="spec-value">${escapeHtml(tree.size || "-")}</div>
-              </div>
-              <div class="spec">
-                <span class="spec-label">Estimated Age</span>
-                <div class="spec-value">${escapeHtml(tree.age || "-")}</div>
-              </div>
-              <div class="spec">
-                <span class="spec-label">Last Repotting</span>
-                <div class="spec-value">${escapeHtml(tree.repotting || "Not specified")}</div>
-              </div>
-              <div class="spec">
-                <span class="spec-label">Recent Care</span>
-                <div class="spec-value">${escapeHtml(tree.last_maintenance || "Not specified")}</div>
-              </div>
-            </div>
-
-            <div class="registry">
-              <div>
-                <small>Collection Registry</small>
-                <div>${escapeHtml(tree.id || "-")}</div>
-              </div>
-              <div>
-                <small>Price</small>
-                <div>${escapeHtml(tree.price || "-")}</div>
-              </div>
-            </div>
-          </aside>
-        </section>
-
-        <section class="content">
-          <article class="panel">
-            <div class="panel-header">
-              <h2 class="panel-title">Style Explanation</h2>
-            </div>
-            <div class="panel-body">
-              <p>${escapeHtml(tree.style_explanation || "No style explanation available yet.")}</p>
-            </div>
-          </article>
-
-          <article class="panel">
-            <div class="panel-header">
-              <h2 class="panel-title">General Care Guide</h2>
-            </div>
-            <div class="panel-body">
-              <div class="care-list">
-                <div class="care-item"><strong>Overview</strong><span>${escapeHtml(tree.care_summary || "")}</span></div>
-                <div class="care-item"><strong>Light</strong><span>${escapeHtml(tree.care_light || "")}</span></div>
-                <div class="care-item"><strong>Watering</strong><span>${escapeHtml(tree.care_watering || "")}</span></div>
-                <div class="care-item"><strong>Substrate</strong><span>${escapeHtml(tree.care_substrate || "")}</span></div>
-                <div class="care-item"><strong>Feeding</strong><span>${escapeHtml(tree.care_feeding || "")}</span></div>
-                <div class="care-item"><strong>Notes</strong><span>${escapeHtml(tree.care_notes || "")}</span></div>
-              </div>
-            </div>
-          </article>
-        </section>
-
-        <div class="footer">© 2026 Korea Bonsai Museum</div>
-      </div>
-    `;
-  }
-
-  function loadRemoteDataJSONP() {
-    return new Promise((resolve, reject) => {
-      const callbackName = "bonsaiCallback_" + Date.now();
-
-      window[callbackName] = function(data) {
-        resolve(data);
-        delete window[callbackName];
-        script.remove();
-      };
-
-      const script = document.createElement("script");
-      script.src = REMOTE_JSON_URL + "?callback=" + callbackName;
-
-      script.onerror = function() {
-        reject(new Error("Unable to load remote data."));
-        delete window[callbackName];
-        script.remove();
-      };
-
-      document.body.appendChild(script);
-    });
-  }
-
-  async function init() {
-    const app = document.getElementById("app");
-
-    try {
-      app.className = "loading";
-      app.textContent = "Loading specimen profile...";
-
-      const catalog = await loadRemoteDataJSONP();
-
-      if (!Array.isArray(catalog) || catalog.length === 0) {
-        throw new Error("No specimen data found.");
-      }
-
-      if (catalog.error) {
-        throw new Error(catalog.error);
-      }
-
-      const requestedId = getQueryParam("id") || DEFAULT_ID;
-      const tree = catalog.find(item => String(item.id) === String(requestedId)) || catalog[0];
-
-      if (!tree) {
-        throw new Error("No matching specimen found for ID: " + requestedId);
-      }
-
-      app.className = "";
-      app.innerHTML = renderSpecimen(tree);
-
-    } catch (error) {
-      app.className = "error";
-      app.textContent = "Unable to load specimen profile: " + error.message;
-      console.error(error);
-    }
-  }
-
-  init();
-</script>
+    init();
+  </script>
 </body>
 </html>
