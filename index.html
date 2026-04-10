@@ -3,666 +3,455 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Specimen Profile | Korea Bonsai Museum</title>
+  <title>Korea Bonsai Museum - Specimen Profile</title>
   <style>
-    :root {
-      --museum-green: #183126;
-      --museum-green-2: #244536;
-      --soft-gold: #b79255;
-      --parchment: #fbfaf7;
-      --paper: #ffffff;
-      --text-dark: #243028;
-      --text-soft: #627166;
-      --line: #e8e3d8;
-      --shadow: 0 20px 50px rgba(19, 33, 26, 0.08);
-      --radius: 22px;
-      --radius-sm: 14px;
-      --max: 1100px;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
     body {
+      font-family: Arial, sans-serif;
       margin: 0;
-      font-family: "Inter", "Segoe UI", "Noto Sans KR", Arial, sans-serif;
-      color: var(--text-dark);
-      background:
-        radial-gradient(circle at top left, rgba(183,146,85,0.08), transparent 30%),
-        linear-gradient(180deg, #f4f2ec 0%, #f6f4ef 100%);
-      min-height: 100vh;
+      padding: 0;
+      background: #f5f5f5;
+      color: #222;
     }
 
-    .page {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 28px 18px 48px;
+    .container {
+      max-width: 1100px;
+      margin: 30px auto;
+      padding: 20px;
     }
 
-    .shell {
-      background: var(--parchment);
-      border: 1px solid rgba(183,146,85,0.18);
-      border-radius: 28px;
-      box-shadow: var(--shadow);
+    .card {
+      background: white;
+      border-radius: 14px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
       overflow: hidden;
-    }
-
-    .top-bar {
-      height: 6px;
-      background: linear-gradient(90deg, var(--museum-green), var(--soft-gold));
-    }
-
-    .museum-header {
-      padding: 18px 26px 0;
-      text-align: center;
-    }
-
-    .museum-header .eyebrow {
-      display: inline-block;
-      text-transform: uppercase;
-      letter-spacing: 0.28em;
-      font-size: 0.74rem;
-      color: var(--soft-gold);
-      margin-bottom: 10px;
     }
 
     .hero {
       display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
+      grid-template-columns: 1.1fr 1fr;
       gap: 24px;
-      padding: 24px 24px 8px;
-    }
-
-    .hero-card,
-    .side-card,
-    .panel {
-      background: rgba(255,255,255,0.7);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      overflow: hidden;
-      backdrop-filter: blur(8px);
-    }
-
-    .hero-media {
-      aspect-ratio: 4 / 3;
-      background: #ece8df;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .hero-media img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .hero-body {
       padding: 24px;
     }
 
-    .title-row {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .title-block h1 {
-      margin: 0;
-      font-family: "Cormorant Garamond", "Times New Roman", serif;
-      font-size: clamp(2rem, 4vw, 3.2rem);
-      line-height: 0.95;
-      color: var(--museum-green);
-      font-weight: 600;
-    }
-
-    .korean-name {
-      margin-top: 10px;
-      font-size: 1.15rem;
-      color: #4d5a53;
-      font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
-    }
-
-    .latin-name {
-      margin-top: 6px;
-      font-size: 1rem;
-      font-style: italic;
-      color: #7b867e;
-    }
-
-    .price-pill {
-      white-space: nowrap;
-      background: linear-gradient(180deg, #f4ead8, #f1e3ca);
-      color: #6f562a;
-      border: 1px solid rgba(183,146,85,0.25);
-      border-radius: 999px;
-      padding: 10px 14px;
-      font-size: 0.95rem;
-      font-weight: 600;
-    }
-
-    .description {
-      margin-top: 18px;
-      color: var(--text-soft);
-      font-size: 0.98rem;
-      line-height: 1.75;
-    }
-
-    .tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 18px;
-    }
-
-    .tag {
-      padding: 9px 12px;
-      border-radius: 999px;
-      background: #f2f5f2;
-      color: #395142;
-      border: 1px solid #dde7df;
-      font-size: 0.88rem;
-    }
-
-    .side-card {
-      display: grid;
-      grid-template-rows: auto 1fr;
-    }
-
-    .spec-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-      padding: 22px;
-    }
-
-    .spec {
-      background: var(--paper);
-      border: 1px solid var(--line);
-      border-radius: var(--radius-sm);
-      padding: 14px;
-    }
-
-    .spec-label {
-      display: block;
-      font-size: 0.74rem;
-      text-transform: uppercase;
-      letter-spacing: 0.11em;
-      color: var(--soft-gold);
-      margin-bottom: 8px;
-    }
-
-    .spec-value {
-      font-size: 1rem;
-      color: var(--text-dark);
-      line-height: 1.45;
-      font-weight: 500;
-    }
-
-    .registry {
-      margin: 0 22px 22px;
-      padding: 16px 18px;
-      border-radius: var(--radius-sm);
-      background: linear-gradient(180deg, #1f3a2d, #183126);
-      color: #eef5f0;
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .registry small {
-      display: block;
-      color: rgba(255,255,255,0.7);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 4px;
-    }
-
-    .content {
-      padding: 8px 24px 24px;
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 24px;
-    }
-
-    .panel-header {
-      padding: 18px 20px 0;
-    }
-
-    .panel-title {
-      margin: 0;
-      font-size: 0.82rem;
-      color: var(--soft-gold);
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-    }
-
-    .panel-body {
-      padding: 18px 20px 22px;
-    }
-
-    .care-list {
-      display: grid;
-      gap: 12px;
-    }
-
-    .care-item {
-      background: var(--paper);
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      padding: 14px 15px;
-    }
-
-    .care-item strong {
-      display: block;
-      color: var(--museum-green);
-      margin-bottom: 6px;
-      font-size: 0.9rem;
-    }
-
-    .care-item span {
-      color: var(--text-soft);
-      line-height: 1.65;
-      font-size: 0.95rem;
-    }
-
-    .footer {
-      text-align: center;
-      padding: 8px 24px 30px;
-      color: #9c9b94;
-      font-size: 0.72rem;
-      text-transform: uppercase;
-      letter-spacing: 0.22em;
-    }
-
-    .empty-image {
+    .hero img {
       width: 100%;
-      height: 100%;
+      height: auto;
+      object-fit: cover;
+      border-radius: 12px;
+      background: #eee;
+    }
+
+    .title {
+      margin: 0 0 10px 0;
+      font-size: 30px;
+      line-height: 1.2;
+    }
+
+    .subtitle {
+      margin: 0 0 20px 0;
+      color: #666;
+      font-size: 15px;
+    }
+
+    .info-grid {
       display: grid;
-      place-items: center;
-      color: #a6a095;
-      font-size: 0.95rem;
-      padding: 20px;
-      text-align: center;
+      grid-template-columns: repeat(2, minmax(180px, 1fr));
+      gap: 12px;
+      margin-top: 18px;
     }
 
-    .loading,
+    .info-box {
+      background: #fafafa;
+      border: 1px solid #e8e8e8;
+      border-radius: 10px;
+      padding: 12px 14px;
+    }
+
+    .label {
+      display: block;
+      font-size: 12px;
+      color: #777;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .value {
+      font-size: 16px;
+      font-weight: 600;
+      color: #222;
+      word-break: break-word;
+    }
+
+    .section {
+      padding: 0 24px 24px 24px;
+    }
+
+    .section h2 {
+      margin: 24px 0 10px 0;
+      font-size: 22px;
+    }
+
+    .section p {
+      line-height: 1.65;
+      color: #333;
+      white-space: pre-line;
+    }
+
+    .care-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(250px, 1fr));
+      gap: 16px;
+      margin-top: 10px;
+    }
+
+    .care-card {
+      background: #fafafa;
+      border: 1px solid #e8e8e8;
+      border-radius: 10px;
+      padding: 16px;
+    }
+
+    .status {
+      padding: 18px 24px;
+      font-size: 14px;
+      color: #555;
+      background: #fff8e1;
+      border-bottom: 1px solid #eee;
+    }
+
     .error {
-      max-width: 760px;
-      margin: 80px auto;
-      background: white;
-      border: 1px solid var(--line);
-      border-radius: 24px;
-      padding: 28px;
-      box-shadow: var(--shadow);
-      text-align: center;
+      background: #fdecea;
+      color: #b3261e;
     }
 
-    .error {
-      color: #8a2f2f;
+    .debug {
+      background: #f7f7f7;
+      border-top: 1px solid #eee;
+      padding: 20px 24px;
+      font-family: Consolas, monospace;
+      font-size: 12px;
+      white-space: pre-wrap;
+      color: #444;
     }
 
-    @media (max-width: 900px) {
-      .hero,
-      .content {
-        grid-template-columns: 1fr;
-      }
-
-      .spec-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-
-    @media (max-width: 640px) {
-      .page {
-        padding: 12px 10px 24px;
-      }
-
-      .museum-header {
-        padding: 16px 16px 0;
-      }
-
+    @media (max-width: 800px) {
       .hero {
-        padding: 16px 16px 6px;
-      }
-
-      .content {
-        padding: 6px 16px 16px;
-      }
-
-      .spec-grid {
         grid-template-columns: 1fr;
       }
 
-      .hero-body,
-      .panel-body {
-        padding: 16px;
-      }
-
-      .panel-header {
-        padding: 16px 16px 0;
+      .info-grid,
+      .care-grid {
+        grid-template-columns: 1fr;
       }
     }
   </style>
 </head>
 <body>
-  <div class="page">
-    <div id="app" class="loading">Loading specimen profile...</div>
+  <div class="container">
+    <div class="card">
+      <div id="status" class="status">Loading specimen data...</div>
+
+      <div class="hero">
+        <div>
+          <img id="specimenImage" src="" alt="Bonsai specimen image" />
+        </div>
+
+        <div>
+          <h1 id="englishName" class="title">Loading...</h1>
+          <p id="treeIdText" class="subtitle"></p>
+
+          <div class="info-grid">
+            <div class="info-box">
+              <span class="label">Price</span>
+              <span id="price" class="value"></span>
+            </div>
+
+            <div class="info-box">
+              <span class="label">Style</span>
+              <span id="style" class="value"></span>
+            </div>
+
+            <div class="info-box">
+              <span class="label">Age</span>
+              <span id="age" class="value"></span>
+            </div>
+
+            <div class="info-box">
+              <span class="label">Repotting</span>
+              <span id="repotting" class="value"></span>
+            </div>
+
+            <div class="info-box">
+              <span class="label">Height</span>
+              <span id="height" class="value"></span>
+            </div>
+
+            <div class="info-box">
+              <span class="label">Width</span>
+              <span id="width" class="value"></span>
+            </div>
+
+            <div class="info-box">
+              <span class="label">Depth</span>
+              <span id="depth" class="value"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>Description</h2>
+        <p id="description"></p>
+
+        <h2>Style Explanation</h2>
+        <p id="styleExplanation"></p>
+
+        <h2>Care Guide</h2>
+        <div class="care-grid">
+          <div class="care-card">
+            <h3>Summary</h3>
+            <p id="careSummary"></p>
+          </div>
+
+          <div class="care-card">
+            <h3>Light</h3>
+            <p id="careLight"></p>
+          </div>
+
+          <div class="care-card">
+            <h3>Watering</h3>
+            <p id="careWatering"></p>
+          </div>
+
+          <div class="care-card">
+            <h3>Substrate</h3>
+            <p id="careSubstrate"></p>
+          </div>
+
+          <div class="care-card">
+            <h3>Feeding</h3>
+            <p id="careFeeding"></p>
+          </div>
+
+          <div class="care-card">
+            <h3>Notes</h3>
+            <p id="careNotes"></p>
+          </div>
+        </div>
+      </div>
+
+      <div id="debug" class="debug" style="display:none;"></div>
+    </div>
   </div>
 
   <script>
-    const REMOTE_JSON_URL = "https://script.google.com/macros/s/AKfycby6GaeK3Wg8p5MyKEhRMpy-3P0BIcJwpRWDHwRQG7k_meeI0eDRNeSrRJ7vdBhP9Ug/exec";
-    const DEFAULT_ID = "";
+    // --------------------------------------------------
+    // 1) PUT YOUR JSON URL HERE
+    // --------------------------------------------------
+    const JSON_URL = "PASTE_YOUR_JSON_URL_HERE";
 
-    const CARE_GUIDES = {
-      "Pinus thunbergii": {
-        summary: "Japanese Black Pine prefers strong light, sharp drainage, and a disciplined seasonal maintenance rhythm.",
-        light: "Full sun is strongly recommended. It needs abundant light to maintain compact needles and strong budding.",
-        water: "Water thoroughly, then allow the substrate to approach slight dryness before watering again. Avoid keeping the root ball constantly wet.",
-        substrate: "A fast-draining mineral mix is ideal. A common bonsai mix is akadama, pumice, and lava rock, adjusted to climate and pot size.",
-        feeding: "Feed during the active growing season with a balanced fertilizer, reducing intensity during peak summer stress.",
-        notes: "General care guide only. Refinement techniques such as decandling and needle balancing depend on the tree’s age, health, and stage of development."
-      },
-      "Pinus densiflora": {
-        summary: "Korean Red Pine appreciates sun, good airflow, and a fast-draining mineral substrate.",
-        light: "Provide full sun for healthy needle development and compact growth.",
-        water: "Water thoroughly, then allow the substrate to dry slightly before watering again.",
-        substrate: "Use a structured mineral bonsai soil with strong drainage and aeration.",
-        feeding: "Feed regularly during active growth, while adjusting fertilizer strength to tree vigor.",
-        notes: "Avoid heavy organic soil and prolonged water retention around the roots."
-      },
-      "Acer palmatum": {
-        summary: "Japanese Maple values protection from excessive summer stress while maintaining even moisture and fine ramification.",
-        light: "Bright light or morning sun is ideal. In hot weather, some afternoon protection helps prevent leaf scorch.",
-        water: "Keep the substrate evenly moist but never stagnant. Maples dislike both drought stress and waterlogged roots.",
-        substrate: "Use a well-draining mix with good moisture retention. Akadama-based blends are commonly used.",
-        feeding: "Feed regularly during the growing season with moderate strength to support healthy shoots and leaf color.",
-        notes: "Strong wind, severe heat, and abrupt drying can quickly damage tender foliage."
-      },
-      "Acer pseudosieboldianum": {
-        summary: "Korean Maple benefits from stable moisture, seasonal feeding, and protection from excessive summer heat.",
-        light: "Morning sun and light afternoon shade are often ideal in warmer periods.",
-        water: "Keep the root ball evenly moist without allowing prolonged waterlogging.",
-        substrate: "Use a well-draining mix with some moisture retention to support healthy roots.",
-        feeding: "Apply balanced fertilizer throughout the growing season according to vigor.",
-        notes: "Watch closely for leaf scorch during hot, dry, or windy periods."
-      },
-      "Carpinus turczaninowii": {
-        summary: "Korean Hornbeam responds well to consistent moisture, strong seasonal pruning, and good light.",
-        light: "Provide bright light with good air circulation. Some afternoon protection can help in peak summer heat.",
-        water: "Do not let the substrate dry out completely. Water deeply and consistently.",
-        substrate: "Use a draining bonsai mix that still retains enough moisture for active deciduous growth.",
-        feeding: "Feed during the growing season to support ramification and leaf density.",
-        notes: "Hornbeams are vigorous but appreciate careful summer water management."
-      },
-      DEFAULT: {
-        summary: "This specimen should be grown with attention to balance: light, drainage, and seasonal maintenance are all important.",
-        light: "Provide species-appropriate light with good air circulation.",
-        water: "Water thoroughly when needed rather than lightly and frequently.",
-        substrate: "Use a structured bonsai substrate that drains well and resists compaction.",
-        feeding: "Apply fertilizer during the growing season according to vigor and development stage.",
-        notes: "This is a general care guide and should be adjusted to local climate, pot size, and refinement stage."
-      }
-    };
-
-    function escapeHtml(value = "") {
-      return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-    }
-
+    // --------------------------------------------------
+    // 2) HELPERS
+    // --------------------------------------------------
     function getQueryParam(name) {
       const params = new URLSearchParams(window.location.search);
       return params.get(name);
     }
 
-    function getCareGuide(tree) {
-      if (
-        tree.care_summary ||
-        tree.care_light ||
-        tree.care_watering ||
-        tree.care_substrate ||
-        tree.care_feeding ||
-        tree.care_notes
-      ) {
-        return {
-          summary: tree.care_summary || "",
-          light: tree.care_light || "",
-          water: tree.care_watering || "",
-          substrate: tree.care_substrate || "",
-          feeding: tree.care_feeding || "",
-          notes: tree.care_notes || ""
-        };
+    function safeText(value, fallback = "") {
+      if (value === null || value === undefined) return fallback;
+      return String(value).trim();
+    }
+
+    function formatPriceKRW(value) {
+      if (value === null || value === undefined || value === "") return "";
+
+      const numeric = Number(String(value).replace(/[^0-9.-]/g, ""));
+      if (isNaN(numeric)) return safeText(value);
+
+      return "KRW" + numeric.toLocaleString("en-US");
+    }
+
+    function formatDate(value) {
+      if (!value) return "";
+
+      const text = String(value).trim();
+
+      // Keep original if it is not a standard date
+      const d = new Date(text);
+      if (isNaN(d.getTime())) return text;
+
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    }
+
+    function setText(id, value, fallback = "") {
+      const el = document.getElementById(id);
+      if (el) el.textContent = value || fallback;
+    }
+
+    function setImage(id, src, altText) {
+      const el = document.getElementById(id);
+      if (!el) return;
+
+      if (src) {
+        el.src = src;
+        el.alt = altText || "Specimen image";
+      } else {
+        el.style.display = "none";
+      }
+    }
+
+    function showStatus(message, isError = false) {
+      const status = document.getElementById("status");
+      status.textContent = message;
+      status.className = isError ? "status error" : "status";
+    }
+
+    function showDebug(data) {
+      const debug = document.getElementById("debug");
+      debug.style.display = "block";
+      debug.textContent = data;
+    }
+
+    function normalizeKey(key) {
+      return String(key || "")
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, "_");
+    }
+
+    function getValue(obj, possibleKeys) {
+      if (!obj) return "";
+
+      const keyMap = {};
+      Object.keys(obj).forEach((k) => {
+        keyMap[normalizeKey(k)] = obj[k];
+      });
+
+      for (const key of possibleKeys) {
+        const normalized = normalizeKey(key);
+        if (normalized in keyMap && keyMap[normalized] !== "") {
+          return keyMap[normalized];
+        }
       }
 
-      return CARE_GUIDES[tree.name_latin] || CARE_GUIDES.DEFAULT;
+      return "";
     }
 
-    async function fetchRemoteData() {
-      const response = await fetch(REMOTE_JSON_URL, { cache: "no-store" });
+    function findSpecimenByTreeId(data, requestedId) {
+      if (!Array.isArray(data)) return null;
+      if (!requestedId) return null;
 
-      if (!response.ok) {
-        throw new Error("HTTP " + response.status + " when loading remote sheet data.");
+      const target = String(requestedId).trim().toUpperCase();
+
+      return data.find((item) => {
+        const possibleId =
+          getValue(item, [
+            "tree_id",
+            "tree id",
+            "id",
+            "specimen_id",
+            "specimen id",
+            "bonsai_id",
+            "bonsai id"
+          ]) || "";
+
+        return String(possibleId).trim().toUpperCase() === target;
+      }) || null;
+    }
+
+    function renderSpecimen(specimen, requestedId) {
+      const treeId = getValue(specimen, ["tree_id", "tree id", "id", "specimen_id"]);
+      const englishName = getValue(specimen, ["english_name", "english name", "name"]);
+      const price = getValue(specimen, ["price"]);
+      const style = getValue(specimen, ["style"]);
+      const age = getValue(specimen, ["age"]);
+      const repotting = getValue(specimen, ["repotting"]);
+      const height = getValue(specimen, ["height"]);
+      const width = getValue(specimen, ["width"]);
+      const depth = getValue(specimen, ["depth"]);
+      const description = getValue(specimen, ["description"]);
+      const styleExplanation = getValue(specimen, ["style_explanation", "style explanation"]);
+      const specimenImage = getValue(specimen, ["specimen_image", "specimen image", "image", "photo"]);
+      const careSummary = getValue(specimen, ["care_summary", "care summary"]);
+      const careLight = getValue(specimen, ["care_light", "care light"]);
+      const careWatering = getValue(specimen, ["care_watering", "care watering"]);
+      const careSubstrate = getValue(specimen, ["care_substrate", "care substrate"]);
+      const careFeeding = getValue(specimen, ["care_feeding", "care feeding"]);
+      const careNotes = getValue(specimen, ["care_notes", "care notes"]);
+
+      setText("englishName", safeText(englishName, "Unnamed specimen"));
+      setText("treeIdText", treeId ? `Tree ID: ${treeId}` : `Requested ID: ${requestedId || ""}`);
+
+      // PRICE FORMAT CHANGED HERE
+      setText("price", formatPriceKRW(price));
+
+      setText("style", safeText(style));
+      setText("age", age ? `${age} years` : "");
+      setText("repotting", formatDate(repotting));
+      setText("height", safeText(height));
+      setText("width", safeText(width));
+      setText("depth", safeText(depth));
+
+      setText("description", safeText(description));
+      setText("styleExplanation", safeText(styleExplanation));
+
+      setText("careSummary", safeText(careSummary));
+      setText("careLight", safeText(careLight));
+      setText("careWatering", safeText(careWatering));
+      setText("careSubstrate", safeText(careSubstrate));
+      setText("careFeeding", safeText(careFeeding));
+      setText("careNotes", safeText(careNotes));
+
+      setImage("specimenImage", specimenImage, englishName);
+
+      showStatus("Specimen loaded successfully.");
+      showDebug(JSON.stringify(specimen, null, 2));
+    }
+
+    async function loadSpecimen() {
+      const requestedId = getQueryParam("id");
+
+      if (!requestedId) {
+        showStatus("No specimen ID provided in the URL. Example: ?id=KBM-0001", true);
+        return;
       }
-
-      const text = await response.text();
-
-      let data;
-      try {
-        data = JSON.parse(text);
-      } catch (err) {
-        console.error("Remote response was not valid JSON:", text);
-        throw new Error("Remote endpoint did not return valid JSON.");
-      }
-
-      return data;
-    }
-
-    function renderImage(url, alt) {
-      if (!url) {
-        return `<div class="empty-image">Image not available</div>`;
-      }
-      return `<img src="${escapeHtml(url)}" alt="${escapeHtml(alt)}">`;
-    }
-
-    function formatDimension(value) {
-      if (value === null || value === undefined || String(value).trim() === "") {
-        return "-";
-      }
-      return `${String(value).trim()} cm`;
-    }
-
-    function formatAge(value) {
-      if (value === null || value === undefined || String(value).trim() === "") {
-        return "-";
-      }
-      return `${String(value).trim()} years`;
-    }
-
-    function getHeight(tree) {
-      return tree.height_cm || tree["height_(cm)"] || "";
-    }
-
-    function getWidth(tree) {
-      return tree.width_cm || tree["width_(cm)"] || "";
-    }
-
-    function getDepth(tree) {
-      return tree.depth_cm || tree["depth_(cm)"] || "";
-    }
-
-    function renderSpecimen(tree) {
-      const care = getCareGuide(tree);
-
-      return `
-        <div class="shell">
-          <div class="top-bar"></div>
-
-          <div class="museum-header">
-            <div class="eyebrow">Korea Bonsai Museum</div>
-          </div>
-
-          <section class="hero">
-            <article class="hero-card">
-              <div class="hero-media">
-                ${renderImage(tree.specimen_image, `${tree.name_en || "Specimen"} image`)}
-              </div>
-
-              <div class="hero-body">
-                <div class="title-row">
-                  <div class="title-block">
-                    <h1>${escapeHtml(tree.name_en || "Unknown Specimen")}</h1>
-                    <div class="korean-name">${escapeHtml(tree.name_kr || "-")}</div>
-                    <div class="latin-name">${escapeHtml(tree.name_latin || "-")}</div>
-                  </div>
-                  <div class="price-pill">${escapeHtml(tree.price || "Price on request")}</div>
-                </div>
-
-                <div class="description">
-                  ${escapeHtml(tree.description || "No specimen description available yet.")}
-                </div>
-
-                <div class="tags">
-                  <span class="tag">${escapeHtml(tree.style || "Style not specified")}</span>
-                  <span class="tag">${escapeHtml(tree.size || "Size not specified")}</span>
-                  <span class="tag">${escapeHtml(formatAge(tree.age))}</span>
-                </div>
-              </div>
-            </article>
-
-            <aside class="side-card">
-              <div class="spec-grid">
-                <div class="spec">
-                  <span class="spec-label">Specimen ID</span>
-                  <div class="spec-value">${escapeHtml(tree.id || "-")}</div>
-                </div>
-                <div class="spec">
-                  <span class="spec-label">Style</span>
-                  <div class="spec-value">${escapeHtml(tree.style || "-")}</div>
-                </div>
-                <div class="spec">
-                  <span class="spec-label">Height</span>
-                  <div class="spec-value">${escapeHtml(formatDimension(getHeight(tree)))}</div>
-                </div>
-                <div class="spec">
-                  <span class="spec-label">Width</span>
-                  <div class="spec-value">${escapeHtml(formatDimension(getWidth(tree)))}</div>
-                </div>
-                <div class="spec">
-                  <span class="spec-label">Depth</span>
-                  <div class="spec-value">${escapeHtml(formatDimension(getDepth(tree)))}</div>
-                </div>
-                <div class="spec">
-                  <span class="spec-label">Estimated Age</span>
-                  <div class="spec-value">${escapeHtml(formatAge(tree.age))}</div>
-                </div>
-                <div class="spec">
-                  <span class="spec-label">Last Repotting</span>
-                  <div class="spec-value">${escapeHtml(tree.repotting || "Not specified")}</div>
-                </div>
-                <div class="spec">
-                  <span class="spec-label">Recent Care</span>
-                  <div class="spec-value">${escapeHtml(tree.last_maintenance || "Not specified")}</div>
-                </div>
-              </div>
-
-              <div class="registry">
-                <div>
-                  <small>Collection Registry</small>
-                  <div>${escapeHtml(tree.id || "-")}</div>
-                </div>
-                <div>
-                  <small>Price</small>
-                  <div>${escapeHtml(tree.price || "-")}</div>
-                </div>
-              </div>
-            </aside>
-          </section>
-
-          <section class="content">
-            <article class="panel">
-              <div class="panel-header">
-                <h2 class="panel-title">General Care Guide</h2>
-              </div>
-              <div class="panel-body">
-                <div class="care-list">
-                  <div class="care-item">
-                    <strong>Overview</strong>
-                    <span>${escapeHtml(care.summary)}</span>
-                  </div>
-                  <div class="care-item">
-                    <strong>Light</strong>
-                    <span>${escapeHtml(care.light)}</span>
-                  </div>
-                  <div class="care-item">
-                    <strong>Watering</strong>
-                    <span>${escapeHtml(care.water)}</span>
-                  </div>
-                  <div class="care-item">
-                    <strong>Substrate</strong>
-                    <span>${escapeHtml(care.substrate)}</span>
-                  </div>
-                  <div class="care-item">
-                    <strong>Feeding</strong>
-                    <span>${escapeHtml(care.feeding)}</span>
-                  </div>
-                  <div class="care-item">
-                    <strong>Important Note</strong>
-                    <span>${escapeHtml(care.notes)}</span>
-                  </div>
-                </div>
-              </div>
-            </article>
-          </section>
-
-          <div class="footer">© 2026 Korea Bonsai Museum</div>
-        </div>
-      `;
-    }
-
-    async function init() {
-      const app = document.getElementById("app");
 
       try {
-        const catalog = await fetchRemoteData();
+        showStatus("Loading specimen data...");
 
-        if (!Array.isArray(catalog) || catalog.length === 0) {
-          app.className = "error";
-          app.textContent = "No specimen data found in the sheet.";
+        const response = await fetch(JSON_URL, { cache: "no-store" });
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status} while loading JSON`);
+        }
+
+        const data = await response.json();
+
+        if (!Array.isArray(data)) {
+          throw new Error("JSON loaded, but the root format is not an array.");
+        }
+
+        const specimen = findSpecimenByTreeId(data, requestedId);
+
+        if (!specimen) {
+          showStatus(`No specimen found for ID: ${requestedId}`, true);
+          showDebug("JSON loaded successfully.\n\nRequested ID: " + requestedId + "\n\nFirst object:\n" + JSON.stringify(data[0], null, 2));
           return;
         }
 
-        const requestedId = getQueryParam("id") || DEFAULT_ID;
+        renderSpecimen(specimen, requestedId);
 
-        let tree;
-        if (requestedId) {
-          tree = catalog.find(item => String(item.id).trim() === String(requestedId).trim());
-          if (!tree) {
-            app.className = "error";
-            app.textContent = `No specimen found for ID: ${requestedId}`;
-            return;
-          }
-        } else {
-          tree = catalog[0];
-        }
-
-        app.className = "";
-        app.innerHTML = renderSpecimen(tree);
       } catch (error) {
-        app.className = "error";
-        app.textContent = "Unable to load specimen profile. Check console and data source.";
-        console.error("Init error:", error);
+        showStatus("Unable to load specimen profile: " + error.message, true);
+        showDebug(String(error));
       }
     }
 
-    init();
+    loadSpecimen();
   </script>
 </body>
 </html>
