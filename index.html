@@ -42,15 +42,22 @@
     }
 
     .title {
-      margin: 0 0 10px 0;
+      margin: 0 0 8px 0;
       font-size: 30px;
       line-height: 1.2;
     }
 
     .subtitle {
-      margin: 0 0 20px 0;
+      margin: 0 0 8px 0;
       color: #666;
       font-size: 15px;
+    }
+
+    .subtitle2 {
+      margin: 0 0 18px 0;
+      color: #444;
+      font-size: 18px;
+      font-weight: 600;
     }
 
     .info-grid {
@@ -125,14 +132,13 @@
       color: #b3261e;
     }
 
-    .debug {
-      background: #f7f7f7;
+    .footer {
+      text-align: center;
+      padding: 24px;
+      color: #666;
+      font-size: 14px;
       border-top: 1px solid #eee;
-      padding: 20px 24px;
-      font-family: Consolas, monospace;
-      font-size: 12px;
-      white-space: pre-wrap;
-      color: #444;
+      background: #fafafa;
     }
 
     @media (max-width: 800px) {
@@ -159,6 +165,7 @@
 
         <div>
           <h1 id="englishName" class="title">Loading...</h1>
+          <p id="koreanName" class="subtitle2"></p>
           <p id="treeIdText" class="subtitle"></p>
 
           <div class="info-grid">
@@ -196,17 +203,16 @@
               <span class="label">Depth</span>
               <span id="depth" class="value"></span>
             </div>
+
+            <div class="info-box">
+              <span class="label">Latin Name</span>
+              <span id="latinName" class="value"></span>
+            </div>
           </div>
         </div>
       </div>
 
       <div class="section">
-        <h2>Description</h2>
-        <p id="description"></p>
-
-        <h2>Style Explanation</h2>
-        <p id="styleExplanation"></p>
-
         <h2>Care Guide</h2>
         <div class="care-grid">
           <div class="care-card">
@@ -241,19 +247,13 @@
         </div>
       </div>
 
-      <div id="debug" class="debug" style="display:none;"></div>
+      <div class="footer">Korea Bonsai Museum</div>
     </div>
   </div>
 
   <script>
-    // --------------------------------------------------
-    // 1) PUT YOUR JSON URL HERE
-    // --------------------------------------------------
     const JSON_URL = "https://script.google.com/macros/s/AKfycbxdmV3mWsHBxfqME9p89-OY8onWTZzOWX-Ibe6thxa_K6CExy0Skm_QUcMk8HPwajI/exec";
 
-    // --------------------------------------------------
-    // 2) HELPERS
-    // --------------------------------------------------
     function getQueryParam(name) {
       const params = new URLSearchParams(window.location.search);
       return params.get(name);
@@ -266,26 +266,24 @@
 
     function formatPriceKRW(value) {
       if (value === null || value === undefined || value === "") return "";
-
       const numeric = Number(String(value).replace(/[^0-9.-]/g, ""));
       if (isNaN(numeric)) return safeText(value);
-
       return "KRW" + numeric.toLocaleString("en-US");
     }
 
     function formatDate(value) {
       if (!value) return "";
-
-      const text = String(value).trim();
-
-      // Keep original if it is not a standard date
-      const d = new Date(text);
-      if (isNaN(d.getTime())) return text;
-
+      const d = new Date(value);
+      if (isNaN(d.getTime())) return String(value);
       const year = d.getFullYear();
       const month = String(d.getMonth() + 1).padStart(2, "0");
       const day = String(d.getDate()).padStart(2, "0");
       return `${year}-${month}-${day}`;
+    }
+
+    function formatDimension(value) {
+      if (value === null || value === undefined || value === "") return "";
+      return `${value} cm`;
     }
 
     function setText(id, value, fallback = "") {
@@ -296,7 +294,6 @@
     function setImage(id, src, altText) {
       const el = document.getElementById(id);
       if (!el) return;
-
       if (src) {
         el.src = src;
         el.alt = altText || "Specimen image";
@@ -311,17 +308,12 @@
       status.className = isError ? "status error" : "status";
     }
 
-    function showDebug(data) {
-      const debug = document.getElementById("debug");
-      debug.style.display = "block";
-      debug.textContent = data;
-    }
-
     function normalizeKey(key) {
       return String(key || "")
         .trim()
         .toLowerCase()
-        .replace(/\s+/g, "_");
+        .replace(/\s+/g, "_")
+        .replace(/[()]/g, "");
     }
 
     function getValue(obj, possibleKeys) {
@@ -349,56 +341,50 @@
       const target = String(requestedId).trim().toUpperCase();
 
       return data.find((item) => {
-        const possibleId =
-          getValue(item, [
-            "tree_id",
-            "tree id",
-            "id",
-            "specimen_id",
-            "specimen id",
-            "bonsai_id",
-            "bonsai id"
-          ]) || "";
+        const possibleId = getValue(item, [
+          "Tree ID",
+          "tree_id",
+          "tree id",
+          "id",
+          "specimen_id"
+        ]) || "";
 
         return String(possibleId).trim().toUpperCase() === target;
       }) || null;
     }
 
     function renderSpecimen(specimen, requestedId) {
-      const treeId = getValue(specimen, ["tree_id", "tree id", "id", "specimen_id"]);
-      const englishName = getValue(specimen, ["english_name", "english name", "name"]);
-      const price = getValue(specimen, ["price"]);
-      const style = getValue(specimen, ["style"]);
-      const age = getValue(specimen, ["age"]);
+      const treeId = getValue(specimen, ["Tree ID", "tree_id", "tree id", "id"]);
+      const englishName = getValue(specimen, ["English Name", "english_name", "english name", "name"]);
+      const koreanName = getValue(specimen, ["Species", "Korean Name", "korean_name", "korean name"]);
+      const latinName = getValue(specimen, ["Latin Name", "latin_name", "latin name"]);
+      const price = getValue(specimen, ["price_krw", "price"]);
+      const style = getValue(specimen, ["Style", "style"]);
+      const age = getValue(specimen, ["Estimated Age Input", "age"]);
       const repotting = getValue(specimen, ["repotting"]);
-      const height = getValue(specimen, ["height"]);
-      const width = getValue(specimen, ["width"]);
-      const depth = getValue(specimen, ["depth"]);
-      const description = getValue(specimen, ["description"]);
-      const styleExplanation = getValue(specimen, ["style_explanation", "style explanation"]);
-      const specimenImage = getValue(specimen, ["specimen_image", "specimen image", "image", "photo"]);
-      const careSummary = getValue(specimen, ["care_summary", "care summary"]);
-      const careLight = getValue(specimen, ["care_light", "care light"]);
-      const careWatering = getValue(specimen, ["care_watering", "care watering"]);
-      const careSubstrate = getValue(specimen, ["care_substrate", "care substrate"]);
-      const careFeeding = getValue(specimen, ["care_feeding", "care feeding"]);
-      const careNotes = getValue(specimen, ["care_notes", "care notes"]);
+      const height = getValue(specimen, ["Height (CM)", "height"]);
+      const width = getValue(specimen, ["Width (CM)", "width"]);
+      const depth = getValue(specimen, ["Depth (CM)", "depth"]);
+      const specimenImage = getValue(specimen, ["specimen_image", "RAW_DRIVE_IMAGE LINK", "image"]);
+      const careSummary = getValue(specimen, ["care_summary"]);
+      const careLight = getValue(specimen, ["care_light"]);
+      const careWatering = getValue(specimen, ["care_watering"]);
+      const careSubstrate = getValue(specimen, ["care_substrate"]);
+      const careFeeding = getValue(specimen, ["care_feeding"]);
+      const careNotes = getValue(specimen, ["care_notes"]);
 
       setText("englishName", safeText(englishName, "Unnamed specimen"));
+      setText("koreanName", safeText(koreanName));
       setText("treeIdText", treeId ? `Tree ID: ${treeId}` : `Requested ID: ${requestedId || ""}`);
 
-      // PRICE FORMAT CHANGED HERE
       setText("price", formatPriceKRW(price));
-
       setText("style", safeText(style));
       setText("age", age ? `${age} years` : "");
       setText("repotting", formatDate(repotting));
-      setText("height", safeText(height));
-      setText("width", safeText(width));
-      setText("depth", safeText(depth));
-
-      setText("description", safeText(description));
-      setText("styleExplanation", safeText(styleExplanation));
+      setText("height", formatDimension(height));
+      setText("width", formatDimension(width));
+      setText("depth", formatDimension(depth));
+      setText("latinName", safeText(latinName));
 
       setText("careSummary", safeText(careSummary));
       setText("careLight", safeText(careLight));
@@ -410,7 +396,6 @@
       setImage("specimenImage", specimenImage, englishName);
 
       showStatus("Specimen loaded successfully.");
-      showDebug(JSON.stringify(specimen, null, 2));
     }
 
     async function loadSpecimen() {
@@ -426,7 +411,7 @@
 
         const response = await fetch(JSON_URL, { cache: "no-store" });
         if (!response.ok) {
-          throw new Error(`HTTP ${response.status} while loading JSON`);
+          throw new Error(`HTTP ${response.status} while loading JSON from: ${JSON_URL}`);
         }
 
         const data = await response.json();
@@ -439,7 +424,6 @@
 
         if (!specimen) {
           showStatus(`No specimen found for ID: ${requestedId}`, true);
-          showDebug("JSON loaded successfully.\n\nRequested ID: " + requestedId + "\n\nFirst object:\n" + JSON.stringify(data[0], null, 2));
           return;
         }
 
@@ -447,7 +431,6 @@
 
       } catch (error) {
         showStatus("Unable to load specimen profile: " + error.message, true);
-        showDebug(String(error));
       }
     }
 
