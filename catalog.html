@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Korea Bonsai Museum – Collection</title>
+
+<style>
+body{
+font-family: Georgia, serif;
+background:#f3f0e8;
+margin:0;
+padding:40px;
+}
+
+h1{
+text-align:center;
+margin-bottom:30px;
+}
+
+.controls{
+display:flex;
+gap:15px;
+margin-bottom:30px;
+flex-wrap:wrap;
+justify-content:center;
+}
+
+select{
+padding:8px;
+font-size:14px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+gap:24px;
+}
+
+.card{
+background:white;
+border-radius:14px;
+overflow:hidden;
+box-shadow:0 6px 20px rgba(0,0,0,0.08);
+transition:0.2s;
+}
+
+.card:hover{
+transform:translateY(-5px);
+}
+
+.card img{
+width:100%;
+height:200px;
+object-fit:cover;
+}
+
+.card-body{
+padding:15px;
+}
+
+.card-title{
+font-size:18px;
+margin-bottom:6px;
+}
+
+.card-meta{
+font-size:14px;
+color:#777;
+margin-bottom:8px;
+}
+
+.card-price{
+font-weight:bold;
+}
+
+a{
+text-decoration:none;
+color:inherit;
+}
+</style>
+</head>
+
+
+<body>
+
+<h1>Korea Bonsai Museum Collection</h1>
+
+<div class="controls">
+
+<select id="filterSpecies">
+<option value="">All Species</option>
+</select>
+
+<select id="filterStyle">
+<option value="">All Styles</option>
+</select>
+
+<select id="sortPrice">
+<option value="">Sort by Price</option>
+<option value="low">Lowest first</option>
+<option value="high">Highest first</option>
+</select>
+
+</div>
+
+
+<div class="grid" id="catalog"></div>
+
+
+<script>
+
+const JSON_URL =
+"https://script.google.com/macros/s/AKfycbwBLnlNU8miAjZMAZiuZBScioCfuUx3zE72Weyg1iC8AdH9WpPUpuT33WPzCeyH8So/exec";
+
+
+let trees=[];
+
+
+function normalize(key){
+return String(key||"").trim().toLowerCase();
+}
+
+
+function getValue(obj,keys){
+
+for(const k of keys){
+
+for(const actual in obj){
+
+if(normalize(actual)===normalize(k)){
+return obj[actual];
+}
+
+}
+
+}
+
+return "";
+
+}
+
+
+function populateFilters(data){
+
+const speciesSet=new Set();
+const styleSet=new Set();
+
+data.forEach(tree=>{
+
+speciesSet.add(
+getValue(tree,["Species","Korean Name"])
+);
+
+styleSet.add(
+getValue(tree,["Style"])
+);
+
+});
+
+
+speciesSet.forEach(s=>{
+
+if(!s) return;
+
+document.getElementById("filterSpecies")
+.innerHTML+=`<option>${s}</option>`;
+
+});
+
+
+styleSet.forEach(s=>{
+
+if(!s) return;
+
+document.getElementById("filterStyle")
+.innerHTML+=`<option>${s}</option>`;
+
+});
+
+}
+
+
+function renderCatalog(data){
+
+const container=document.getElementById("catalog");
+
+container.innerHTML="";
+
+
+data.forEach(tree=>{
+
+const id=getValue(tree,["Tree ID","id"]);
+
+const name=getValue(tree,["English Name"]);
+
+const style=getValue(tree,["Style"]);
+
+const price=getValue(tree,["price"]);
+
+const image=getValue(tree,["specimen_image"]);
+
+container.innerHTML+=`
+
+<a href="specimen.html?id=${id}">
+
+<div class="card">
+
+<img src="${image}">
+
+<div class="card-body">
+
+<div class="card-title">${name}</div>
+
+<div class="card-meta">${style}</div>
+
+<div class="card-price">KRW ${price}</div>
+
+</div>
+
+</div>
+
+</a>
+
+`;
+
+});
+
+}
+
+
+function applyFilters(){
+
+let filtered=[...trees];
+
+
+const speciesFilter=
+document.getElementById("filterSpecies").value;
+
+const styleFilter=
+document.getElementById("filterStyle").value;
+
+const priceSort=
+document.getElementById("sortPrice").value;
+
+
+if(speciesFilter){
+
+filtered=filtered.filter(tree=>
+
+getValue(tree,["Species","Korean Name"])
+===speciesFilter
+
+);
+
+}
+
+
+if(styleFilter){
+
+filtered=filtered.filter(tree=>
+
+getValue(tree,["Style"])
+===styleFilter
+
+);
+
+}
+
+
+if(priceSort){
+
+filtered.sort((a,b)=>{
+
+const pa=parseInt(getValue(a,["price"]))||0;
+const pb=parseInt(getValue(b,["price"]))||0;
+
+return priceSort==="low"
+? pa-pb
+: pb-pa;
+
+});
+
+}
+
+
+renderCatalog(filtered);
+
+}
+
+
+document
+.getElementById("filterSpecies")
+.addEventListener("change",applyFilters);
+
+document
+.getElementById("filterStyle")
+.addEventListener("change",applyFilters);
+
+document
+.getElementById("sortPrice")
+.addEventListener("change",applyFilters);
+
+
+
+fetch(JSON_URL)
+.then(res=>res.json())
+.then(data=>{
+
+trees=data;
+
+populateFilters(data);
+
+renderCatalog(data);
+
+});
+
+</script>
+
+
+</body>
+</html>
