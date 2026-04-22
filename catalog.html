@@ -199,28 +199,17 @@ const price=getValue(tree,["price"]);
 
 const image=getValue(tree,["specimen_image"]);
 
-container.innerHTML+=`
-
-<a href="./index.html?id=${encodeURIComponent(id)}">
-
-<div class="card">
-
-<img src="${image}">
-
-<div class="card-body">
-
-<div class="card-title">${name}</div>
-
-<div class="card-meta">${style}</div>
-
-<div class="card-price">KRW ${price}</div>
-
-</div>
-
-</div>
-
-</a>
-
+container.innerHTML += `
+  <a href="./?id=${encodeURIComponent(id)}">
+    <div class="card">
+      <img src="${image}" alt="${name}">
+      <div class="card-body">
+        <div class="card-title">${name}</div>
+        <div class="card-meta">${style}</div>
+        <div class="card-price">KRW ${price}</div>
+      </div>
+    </div>
+  </a>
 `;
 
 });
