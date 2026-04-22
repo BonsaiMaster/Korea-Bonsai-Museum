@@ -72,7 +72,7 @@
 
     .controls-grid {
       display: grid;
-      grid-template-columns: repeat(6, minmax(140px, 1fr));
+      grid-template-columns: repeat(5, minmax(140px, 1fr));
       gap: 14px;
     }
 
@@ -284,7 +284,7 @@
       <div class="museum-mark">Korea Bonsai Museum</div>
       <h1>Collection Catalogue</h1>
       <p class="subtitle">
-        Browse the collection and sort specimens by species, style, size, price, age, height, or tree ID.
+        Browse the collection and sort specimens by species, style, price, age, height, or tree ID.
       </p>
     </div>
 
@@ -295,7 +295,7 @@
           <input
             id="searchBox"
             type="text"
-            placeholder="Search by ID, English name, style, or size"
+            placeholder="Search by ID, English name, or style"
           />
         </div>
 
@@ -310,13 +310,6 @@
           <label class="control-label" for="filterStyle">Style</label>
           <select id="filterStyle">
             <option value="">All Styles</option>
-          </select>
-        </div>
-
-        <div class="control-group">
-          <label class="control-label" for="filterSize">Size</label>
-          <select id="filterSize">
-            <option value="">All Sizes</option>
           </select>
         </div>
 
@@ -383,8 +376,7 @@
 
     function toNumber(value) {
       if (value === null || value === undefined || value === "") return NaN;
-      const numeric = Number(String(value).replace(/[^0-9.-]/g, ""));
-      return numeric;
+      return Number(String(value).replace(/[^0-9.-]/g, ""));
     }
 
     function formatPriceKRW(value) {
@@ -402,7 +394,6 @@
     function populateFilters(data) {
       const speciesSet = new Set();
       const styleSet = new Set();
-      const sizeSet = new Set();
 
       data.forEach((tree) => {
         const englishName = getValue(tree, [
@@ -417,23 +408,15 @@
           "style"
         ]);
 
-        const size = getValue(tree, [
-          "size",
-          "Size"
-        ]);
-
         if (englishName) speciesSet.add(englishName);
         if (style) styleSet.add(style);
-        if (size) sizeSet.add(size);
       });
 
       const speciesSelect = document.getElementById("filterSpecies");
       const styleSelect = document.getElementById("filterStyle");
-      const sizeSelect = document.getElementById("filterSize");
 
       speciesSelect.innerHTML = `<option value="">All Species</option>`;
       styleSelect.innerHTML = `<option value="">All Styles</option>`;
-      sizeSelect.innerHTML = `<option value="">All Sizes</option>`;
 
       Array.from(speciesSet).sort((a, b) => a.localeCompare(b)).forEach((item) => {
         speciesSelect.innerHTML += `<option value="${item}">${item}</option>`;
@@ -441,10 +424,6 @@
 
       Array.from(styleSet).sort((a, b) => a.localeCompare(b)).forEach((item) => {
         styleSelect.innerHTML += `<option value="${item}">${item}</option>`;
-      });
-
-      Array.from(sizeSet).sort((a, b) => a.localeCompare(b)).forEach((item) => {
-        sizeSelect.innerHTML += `<option value="${item}">${item}</option>`;
       });
     }
 
@@ -528,7 +507,6 @@
       const searchText = document.getElementById("searchBox").value.trim().toLowerCase();
       const speciesFilter = document.getElementById("filterSpecies").value;
       const styleFilter = document.getElementById("filterStyle").value;
-      const sizeFilter = document.getElementById("filterSize").value;
       const sortBy = document.getElementById("sortBy").value;
 
       if (searchText) {
@@ -536,13 +514,11 @@
           const id = safeText(getValue(tree, ["Tree ID", "tree_id", "tree id", "id"])).toLowerCase();
           const name = safeText(getValue(tree, ["English Name", "english_name", "english name", "name"])).toLowerCase();
           const style = safeText(getValue(tree, ["Style", "style"])).toLowerCase();
-          const size = safeText(getValue(tree, ["size", "Size"])).toLowerCase();
 
           return (
             id.includes(searchText) ||
             name.includes(searchText) ||
-            style.includes(searchText) ||
-            size.includes(searchText)
+            style.includes(searchText)
           );
         });
       }
@@ -561,12 +537,6 @@
       if (styleFilter) {
         filtered = filtered.filter((tree) =>
           getValue(tree, ["Style", "style"]) === styleFilter
-        );
-      }
-
-      if (sizeFilter) {
-        filtered = filtered.filter((tree) =>
-          getValue(tree, ["size", "Size"]) === sizeFilter
         );
       }
 
@@ -623,7 +593,6 @@
       document.getElementById("searchBox").value = "";
       document.getElementById("filterSpecies").value = "";
       document.getElementById("filterStyle").value = "";
-      document.getElementById("filterSize").value = "";
       document.getElementById("sortBy").value = "";
       applyFilters();
     }
@@ -631,7 +600,6 @@
     document.getElementById("searchBox").addEventListener("input", applyFilters);
     document.getElementById("filterSpecies").addEventListener("change", applyFilters);
     document.getElementById("filterStyle").addEventListener("change", applyFilters);
-    document.getElementById("filterSize").addEventListener("change", applyFilters);
     document.getElementById("sortBy").addEventListener("change", applyFilters);
     document.getElementById("clearFiltersBtn").addEventListener("click", clearFilters);
 
