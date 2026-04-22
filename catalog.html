@@ -1,310 +1,664 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Korea Bonsai Museum – Collection</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Korea Bonsai Museum – Collection</title>
 
-<style>
-body{
-font-family: Georgia, serif;
-background:#f3f0e8;
-margin:0;
-padding:40px;
-}
+  <style>
+    :root {
+      --bg: #f3f0e8;
+      --card: #fcfbf7;
+      --border: #ded7c8;
+      --text: #2f312b;
+      --muted: #6f7168;
+      --accent: #8e8772;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+    }
 
-h1{
-text-align:center;
-margin-bottom:30px;
-}
+    * {
+      box-sizing: border-box;
+    }
 
-.controls{
-display:flex;
-gap:15px;
-margin-bottom:30px;
-flex-wrap:wrap;
-justify-content:center;
-}
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+    }
 
-select{
-padding:8px;
-font-size:14px;
-}
+    .page {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 40px 20px 60px;
+    }
 
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
-gap:24px;
-}
+    .header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
 
-.card{
-background:white;
-border-radius:14px;
-overflow:hidden;
-box-shadow:0 6px 20px rgba(0,0,0,0.08);
-transition:0.2s;
-}
+    .museum-mark {
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
 
-.card:hover{
-transform:translateY(-5px);
-}
+    h1 {
+      margin: 0;
+      font-size: 40px;
+      font-weight: 500;
+      line-height: 1.15;
+    }
 
-.card img{
-width:100%;
-height:200px;
-object-fit:cover;
-}
+    .subtitle {
+      margin: 12px auto 0;
+      max-width: 780px;
+      color: var(--muted);
+      font-size: 17px;
+    }
 
-.card-body{
-padding:15px;
-}
+    .controls-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      padding: 22px;
+      margin-bottom: 28px;
+    }
 
-.card-title{
-font-size:18px;
-margin-bottom:6px;
-}
+    .controls-grid {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(140px, 1fr));
+      gap: 14px;
+    }
 
-.card-meta{
-font-size:14px;
-color:#777;
-margin-bottom:8px;
-}
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
 
-.card-price{
-font-weight:bold;
-}
+    .control-group.search-group {
+      grid-column: span 2;
+    }
 
-a{
-text-decoration:none;
-color:inherit;
-}
-</style>
+    .control-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #fff;
+      color: var(--text);
+      font-size: 14px;
+      font-family: inherit;
+      outline: none;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(142, 135, 114, 0.12);
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 15px;
+      flex-wrap: wrap;
+    }
+
+    .clear-btn {
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--text);
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-family: inherit;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .clear-btn:hover {
+      background: #f8f5ee;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(245px, 1fr));
+      gap: 24px;
+    }
+
+    .card-link {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+      height: 100%;
+    }
+
+    .card-link:hover .card {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 34px rgba(0, 0, 0, 0.08);
+    }
+
+    .card-image-wrap {
+      background: #ebe6dc;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+    }
+
+    .card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      background: #e5e0d6;
+    }
+
+    .card-body {
+      padding: 16px 16px 18px;
+    }
+
+    .card-id {
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .card-title {
+      font-size: 20px;
+      line-height: 1.25;
+      margin: 0 0 8px;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .card-subtitle {
+      color: var(--muted);
+      font-size: 15px;
+      margin-bottom: 14px;
+      min-height: 22px;
+    }
+
+    .meta-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .meta-row {
+      display: grid;
+      grid-template-columns: 78px 1fr;
+      gap: 10px;
+      align-items: start;
+      font-size: 14px;
+    }
+
+    .meta-label {
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-size: 11px;
+      padding-top: 2px;
+    }
+
+    .meta-value {
+      color: var(--text);
+    }
+
+    .price {
+      margin-top: 14px;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .empty-state {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 30px;
+      text-align: center;
+      color: var(--muted);
+      box-shadow: var(--shadow);
+    }
+
+    @media (max-width: 1100px) {
+      .controls-grid {
+        grid-template-columns: repeat(3, minmax(140px, 1fr));
+      }
+
+      .control-group.search-group {
+        grid-column: span 3;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        padding: 28px 16px 40px;
+      }
+
+      h1 {
+        font-size: 32px;
+      }
+
+      .controls-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .control-group.search-group {
+        grid-column: span 1;
+      }
+    }
+  </style>
 </head>
-
-
 <body>
+  <div class="page">
+    <div class="header">
+      <div class="museum-mark">Korea Bonsai Museum</div>
+      <h1>Collection Catalogue</h1>
+      <p class="subtitle">
+        Browse the collection and sort specimens by species, style, size, price, age, height, or tree ID.
+      </p>
+    </div>
 
-<h1>Korea Bonsai Museum Collection</h1>
+    <div class="controls-card">
+      <div class="controls-grid">
+        <div class="control-group search-group">
+          <label class="control-label" for="searchBox">Search</label>
+          <input
+            id="searchBox"
+            type="text"
+            placeholder="Search by ID, English name, style, or size"
+          />
+        </div>
 
-<div class="controls">
+        <div class="control-group">
+          <label class="control-label" for="filterSpecies">Species</label>
+          <select id="filterSpecies">
+            <option value="">All Species</option>
+          </select>
+        </div>
 
-<select id="filterSpecies">
-<option value="">All Species</option>
-</select>
+        <div class="control-group">
+          <label class="control-label" for="filterStyle">Style</label>
+          <select id="filterStyle">
+            <option value="">All Styles</option>
+          </select>
+        </div>
 
-<select id="filterStyle">
-<option value="">All Styles</option>
-</select>
+        <div class="control-group">
+          <label class="control-label" for="filterSize">Size</label>
+          <select id="filterSize">
+            <option value="">All Sizes</option>
+          </select>
+        </div>
 
-<select id="sortPrice">
-<option value="">Sort by Price</option>
-<option value="low">Lowest first</option>
-<option value="high">Highest first</option>
-</select>
+        <div class="control-group">
+          <label class="control-label" for="sortBy">Sort By</label>
+          <select id="sortBy">
+            <option value="">Default</option>
+            <option value="price-asc">Price: low to high</option>
+            <option value="price-desc">Price: high to low</option>
+            <option value="id-asc">Tree ID: A to Z</option>
+            <option value="id-desc">Tree ID: Z to A</option>
+            <option value="height-asc">Height: low to high</option>
+            <option value="height-desc">Height: high to low</option>
+            <option value="age-asc">Age: low to high</option>
+            <option value="age-desc">Age: high to low</option>
+          </select>
+        </div>
+      </div>
 
-</div>
-
-
-<div class="grid" id="catalog"></div>
-
-
-<script>
-
-const JSON_URL =
-"https://script.google.com/macros/s/AKfycbwBLnlNU8miAjZMAZiuZBScioCfuUx3zE72Weyg1iC8AdH9WpPUpuT33WPzCeyH8So/exec";
-
-
-let trees=[];
-
-
-function normalize(key){
-return String(key||"").trim().toLowerCase();
-}
-
-
-function getValue(obj,keys){
-
-for(const k of keys){
-
-for(const actual in obj){
-
-if(normalize(actual)===normalize(k)){
-return obj[actual];
-}
-
-}
-
-}
-
-return "";
-
-}
-
-
-function populateFilters(data){
-
-const speciesSet=new Set();
-const styleSet=new Set();
-
-data.forEach(tree=>{
-
-speciesSet.add(
-getValue(tree,["Species","Korean Name"])
-);
-
-styleSet.add(
-getValue(tree,["Style"])
-);
-
-});
-
-
-speciesSet.forEach(s=>{
-
-if(!s) return;
-
-document.getElementById("filterSpecies")
-.innerHTML+=`<option>${s}</option>`;
-
-});
-
-
-styleSet.forEach(s=>{
-
-if(!s) return;
-
-document.getElementById("filterStyle")
-.innerHTML+=`<option>${s}</option>`;
-
-});
-
-}
-
-
-function renderCatalog(data){
-
-const container=document.getElementById("catalog");
-
-container.innerHTML="";
-
-
-data.forEach(tree=>{
-
-const id=getValue(tree,["Tree ID","id"]);
-
-const name=getValue(tree,["English Name"]);
-
-const style=getValue(tree,["Style"]);
-
-const price=getValue(tree,["price"]);
-
-const image=getValue(tree,["specimen_image"]);
-
-container.innerHTML += `
-  <a href="./?id=${encodeURIComponent(id)}">
-    <div class="card">
-      <img src="${image}" alt="${name}">
-      <div class="card-body">
-        <div class="card-title">${name}</div>
-        <div class="card-meta">${style}</div>
-        <div class="card-price">KRW ${price}</div>
+      <div class="summary-row">
+        <div id="resultsCount">Loading collection...</div>
+        <button class="clear-btn" id="clearFiltersBtn" type="button">Clear Filters</button>
       </div>
     </div>
-  </a>
-`;
 
-});
+    <div class="grid" id="catalog"></div>
+  </div>
 
-}
+  <script>
+    const JSON_URL = "https://script.google.com/macros/s/AKfycbwBLnlNU8miAjZMAZiuZBScioCfuUx3zE72Weyg1iC8AdH9WpPUpuT33WPzCeyH8So/exec";
 
+    let trees = [];
 
-function applyFilters(){
+    function normalizeKey(key) {
+      return String(key || "")
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, "_")
+        .replace(/[()]/g, "");
+    }
 
-let filtered=[...trees];
+    function getValue(obj, possibleKeys) {
+      if (!obj) return "";
 
+      const keyMap = {};
+      Object.keys(obj).forEach((k) => {
+        keyMap[normalizeKey(k)] = obj[k];
+      });
 
-const speciesFilter=
-document.getElementById("filterSpecies").value;
+      for (const key of possibleKeys) {
+        const normalized = normalizeKey(key);
+        if (normalized in keyMap && keyMap[normalized] !== "") {
+          return keyMap[normalized];
+        }
+      }
 
-const styleFilter=
-document.getElementById("filterStyle").value;
+      return "";
+    }
 
-const priceSort=
-document.getElementById("sortPrice").value;
+    function safeText(value, fallback = "") {
+      if (value === null || value === undefined || value === "") return fallback;
+      return String(value).trim();
+    }
 
+    function toNumber(value) {
+      if (value === null || value === undefined || value === "") return NaN;
+      const numeric = Number(String(value).replace(/[^0-9.-]/g, ""));
+      return numeric;
+    }
 
-if(speciesFilter){
+    function formatPriceKRW(value) {
+      const numeric = toNumber(value);
+      if (isNaN(numeric)) return "";
+      return "KRW " + numeric.toLocaleString("en-US");
+    }
 
-filtered=filtered.filter(tree=>
+    function formatDimension(value) {
+      const numeric = toNumber(value);
+      if (isNaN(numeric)) return "";
+      return numeric + " cm";
+    }
 
-getValue(tree,["Species","Korean Name"])
-===speciesFilter
+    function populateFilters(data) {
+      const speciesSet = new Set();
+      const styleSet = new Set();
+      const sizeSet = new Set();
 
-);
+      data.forEach((tree) => {
+        const englishName = getValue(tree, [
+          "English Name",
+          "english_name",
+          "english name",
+          "name"
+        ]);
 
-}
+        const style = getValue(tree, [
+          "Style",
+          "style"
+        ]);
 
+        const size = getValue(tree, [
+          "size",
+          "Size"
+        ]);
 
-if(styleFilter){
+        if (englishName) speciesSet.add(englishName);
+        if (style) styleSet.add(style);
+        if (size) sizeSet.add(size);
+      });
 
-filtered=filtered.filter(tree=>
+      const speciesSelect = document.getElementById("filterSpecies");
+      const styleSelect = document.getElementById("filterStyle");
+      const sizeSelect = document.getElementById("filterSize");
 
-getValue(tree,["Style"])
-===styleFilter
+      speciesSelect.innerHTML = `<option value="">All Species</option>`;
+      styleSelect.innerHTML = `<option value="">All Styles</option>`;
+      sizeSelect.innerHTML = `<option value="">All Sizes</option>`;
 
-);
+      Array.from(speciesSet).sort((a, b) => a.localeCompare(b)).forEach((item) => {
+        speciesSelect.innerHTML += `<option value="${item}">${item}</option>`;
+      });
 
-}
+      Array.from(styleSet).sort((a, b) => a.localeCompare(b)).forEach((item) => {
+        styleSelect.innerHTML += `<option value="${item}">${item}</option>`;
+      });
 
+      Array.from(sizeSet).sort((a, b) => a.localeCompare(b)).forEach((item) => {
+        sizeSelect.innerHTML += `<option value="${item}">${item}</option>`;
+      });
+    }
 
-if(priceSort){
+    function renderCatalog(data) {
+      const container = document.getElementById("catalog");
 
-filtered.sort((a,b)=>{
+      if (!data.length) {
+        container.innerHTML = `
+          <div class="empty-state">
+            No specimens match the selected filters.
+          </div>
+        `;
+        return;
+      }
 
-const pa=parseInt(getValue(a,["price"]))||0;
-const pb=parseInt(getValue(b,["price"]))||0;
+      container.innerHTML = data.map((tree) => {
+        const id = getValue(tree, ["Tree ID", "tree_id", "tree id", "id"]);
+        const name = getValue(tree, ["English Name", "english_name", "english name", "name"]);
+        const style = getValue(tree, ["Style", "style"]);
+        const size = getValue(tree, ["size", "Size"]);
+        const age = getValue(tree, ["Estimated Age Input", "age"]);
+        const height = getValue(tree, ["Height (CM)", "height"]);
+        const price = getValue(tree, ["price_krw", "price"]);
+        const image = getValue(tree, ["specimen_image", "image"]);
 
-return priceSort==="low"
-? pa-pb
-: pb-pa;
+        return `
+          <a class="card-link" href="./?id=${encodeURIComponent(id)}">
+            <div class="card">
+              <div class="card-image-wrap">
+                <img src="${safeText(image)}" alt="${safeText(name, "Specimen image")}" />
+              </div>
 
-});
+              <div class="card-body">
+                <div class="card-id">${safeText(id)}</div>
+                <h2 class="card-title">${safeText(name, "Unnamed specimen")}</h2>
+                <div class="card-subtitle">${safeText(style)}</div>
 
-}
+                <div class="meta-list">
+                  ${size ? `
+                    <div class="meta-row">
+                      <div class="meta-label">Size</div>
+                      <div class="meta-value">${safeText(size)}</div>
+                    </div>
+                  ` : ""}
 
+                  ${height ? `
+                    <div class="meta-row">
+                      <div class="meta-label">Height</div>
+                      <div class="meta-value">${formatDimension(height)}</div>
+                    </div>
+                  ` : ""}
 
-renderCatalog(filtered);
+                  ${age ? `
+                    <div class="meta-row">
+                      <div class="meta-label">Age</div>
+                      <div class="meta-value">${safeText(age)} years</div>
+                    </div>
+                  ` : ""}
+                </div>
 
-}
+                ${formatPriceKRW(price) ? `<div class="price">${formatPriceKRW(price)}</div>` : ""}
+              </div>
+            </div>
+          </a>
+        `;
+      }).join("");
+    }
 
+    function updateResultsCount(count, total) {
+      const el = document.getElementById("resultsCount");
+      if (count === total) {
+        el.textContent = `${total} specimens in the collection`;
+      } else {
+        el.textContent = `${count} of ${total} specimens shown`;
+      }
+    }
 
-document
-.getElementById("filterSpecies")
-.addEventListener("change",applyFilters);
+    function applyFilters() {
+      let filtered = [...trees];
 
-document
-.getElementById("filterStyle")
-.addEventListener("change",applyFilters);
+      const searchText = document.getElementById("searchBox").value.trim().toLowerCase();
+      const speciesFilter = document.getElementById("filterSpecies").value;
+      const styleFilter = document.getElementById("filterStyle").value;
+      const sizeFilter = document.getElementById("filterSize").value;
+      const sortBy = document.getElementById("sortBy").value;
 
-document
-.getElementById("sortPrice")
-.addEventListener("change",applyFilters);
+      if (searchText) {
+        filtered = filtered.filter((tree) => {
+          const id = safeText(getValue(tree, ["Tree ID", "tree_id", "tree id", "id"])).toLowerCase();
+          const name = safeText(getValue(tree, ["English Name", "english_name", "english name", "name"])).toLowerCase();
+          const style = safeText(getValue(tree, ["Style", "style"])).toLowerCase();
+          const size = safeText(getValue(tree, ["size", "Size"])).toLowerCase();
 
+          return (
+            id.includes(searchText) ||
+            name.includes(searchText) ||
+            style.includes(searchText) ||
+            size.includes(searchText)
+          );
+        });
+      }
 
+      if (speciesFilter) {
+        filtered = filtered.filter((tree) =>
+          getValue(tree, [
+            "English Name",
+            "english_name",
+            "english name",
+            "name"
+          ]) === speciesFilter
+        );
+      }
 
-fetch(JSON_URL)
-.then(res=>res.json())
-.then(data=>{
+      if (styleFilter) {
+        filtered = filtered.filter((tree) =>
+          getValue(tree, ["Style", "style"]) === styleFilter
+        );
+      }
 
-trees=data;
+      if (sizeFilter) {
+        filtered = filtered.filter((tree) =>
+          getValue(tree, ["size", "Size"]) === sizeFilter
+        );
+      }
 
-populateFilters(data);
+      if (sortBy) {
+        filtered.sort((a, b) => {
+          const aPrice = toNumber(getValue(a, ["price_krw", "price"]));
+          const bPrice = toNumber(getValue(b, ["price_krw", "price"]));
 
-renderCatalog(data);
+          const aId = safeText(getValue(a, ["Tree ID", "tree_id", "tree id", "id"]));
+          const bId = safeText(getValue(b, ["Tree ID", "tree_id", "tree id", "id"]));
 
-});
+          const aHeight = toNumber(getValue(a, ["Height (CM)", "height"]));
+          const bHeight = toNumber(getValue(b, ["Height (CM)", "height"]));
 
-</script>
+          const aAge = toNumber(getValue(a, ["Estimated Age Input", "age"]));
+          const bAge = toNumber(getValue(b, ["Estimated Age Input", "age"]));
 
+          switch (sortBy) {
+            case "price-asc":
+              return (isNaN(aPrice) ? Infinity : aPrice) - (isNaN(bPrice) ? Infinity : bPrice);
 
+            case "price-desc":
+              return (isNaN(bPrice) ? -Infinity : bPrice) - (isNaN(aPrice) ? -Infinity : aPrice);
+
+            case "id-asc":
+              return aId.localeCompare(bId, undefined, { numeric: true });
+
+            case "id-desc":
+              return bId.localeCompare(aId, undefined, { numeric: true });
+
+            case "height-asc":
+              return (isNaN(aHeight) ? Infinity : aHeight) - (isNaN(bHeight) ? Infinity : bHeight);
+
+            case "height-desc":
+              return (isNaN(bHeight) ? -Infinity : bHeight) - (isNaN(aHeight) ? -Infinity : aHeight);
+
+            case "age-asc":
+              return (isNaN(aAge) ? Infinity : aAge) - (isNaN(bAge) ? Infinity : bAge);
+
+            case "age-desc":
+              return (isNaN(bAge) ? -Infinity : bAge) - (isNaN(aAge) ? -Infinity : aAge);
+
+            default:
+              return 0;
+          }
+        });
+      }
+
+      renderCatalog(filtered);
+      updateResultsCount(filtered.length, trees.length);
+    }
+
+    function clearFilters() {
+      document.getElementById("searchBox").value = "";
+      document.getElementById("filterSpecies").value = "";
+      document.getElementById("filterStyle").value = "";
+      document.getElementById("filterSize").value = "";
+      document.getElementById("sortBy").value = "";
+      applyFilters();
+    }
+
+    document.getElementById("searchBox").addEventListener("input", applyFilters);
+    document.getElementById("filterSpecies").addEventListener("change", applyFilters);
+    document.getElementById("filterStyle").addEventListener("change", applyFilters);
+    document.getElementById("filterSize").addEventListener("change", applyFilters);
+    document.getElementById("sortBy").addEventListener("change", applyFilters);
+    document.getElementById("clearFiltersBtn").addEventListener("click", clearFilters);
+
+    fetch(JSON_URL, { cache: "no-store" })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status} while loading JSON.`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (!Array.isArray(data)) {
+          throw new Error("JSON loaded, but the root format is not an array.");
+        }
+
+        trees = data;
+        populateFilters(trees);
+        applyFilters();
+      })
+      .catch((error) => {
+        document.getElementById("catalog").innerHTML = `
+          <div class="empty-state">
+            Unable to load collection.<br><br>${error.message}
+          </div>
+        `;
+        document.getElementById("resultsCount").textContent = "Unable to load collection";
+      });
+  </script>
 </body>
 </html>
